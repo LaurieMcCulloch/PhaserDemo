@@ -1,6 +1,6 @@
 // Setting the URL
-var envKey = '18736977816700314824859158415299'
-var collectURL = 'https://collect13665ttrlv.deltadna.net/collect/api/'
+var envKey = '18736977816700314824859158415299';
+var collectURL = 'https://collect13665ttrlv.deltadna.net/collect/api/';
 var engageURL = 'https://engage13665ttrlv.deltadna.net/'
 var url = collectURL + envKey + '/bulk';
 var eurl = engageURL + envKey ; 
@@ -57,41 +57,50 @@ var sendEventList = _.debounce(function() {
   });
 }, 500)
 
-//set the var makeEngageRequest to represent the debounce function
-//the debounce underscore function makes the fnction only to be executed every 500 ms, this prevents bashing the send event button to be a problem.
-var makeEngageRequest = _.debounce(function(decisionPoint, parameters) {
-  
-  console.log('Making Engage Request: ', decisionPoint , parameters);
-    if (!parameters)
-        {
-            var parameters = {};
-        }
 
+//set makeEngageRequest to represent the debounce function
+//the debounce underscore function makes the fnction only to be executed every 500 ms, this prevents bashing the send event button to be a problem.
+//make engage request to the specified decisoin point with the specified parameter payload and have the response trigger the specified callback function 
+var makeEngageRequest = _.debounce(function(decisionPoint, parameters, responseCallback) {
+
+  var responseData ;
     
-  var engagement = {
-      decisionPoint : decisionPoint,
-      userID : getUser(),
-      platform : 'WEB',
-      parameters: parameters
-  };   
-  
-  if (decisionPoint === 'config'){
-     engagement = $.extend(true, {flavour:'internal'}, engagement);
-  }
-  //actually send the events
-  $.ajax({
-    type: 'POST',
-    url: eurl,
-    data: JSON.stringify(engagement),
-    success: function() {
-      console.log('Engage Request successfully sent');
-    },
-    error: function() {
-      //there was an error making an Engage request      
-      console.log('Error making Engage request', arguments)
+  console.log('Making Engage Request: ', decisionPoint , parameters);
+    if (!parameters) {
+            var parameters = {};
     }
-  });
-}, 500)
+
+  
+    // build engagement request
+    var engagement = {
+        decisionPoint : decisionPoint,
+        userID : getUser(),
+        platform : 'WEB',        
+        parameters: parameters
+    };   
+  
+    if(decisionPoint === "config"){
+         engagement = $.extend({flavour:'internal'}, engagement ) ;
+    }
+    
+    console.log(JSON.stringify(engagement));
+      //actually send the events
+      $.ajax({
+        type: 'POST',
+        url: eurl,
+        data: JSON.stringify(engagement),
+        success: function(responseData) {
+            //the engage request was a success, fire callback
+            console.log('Engage Request successfully sent');        
+            responseCallback(responseData);            
+        },
+        error: function() {
+          //there was an error making an Engage request      
+          console.log('Error making Engage request', arguments)
+        }
+      });
+    }, 500
+)
 
 
 

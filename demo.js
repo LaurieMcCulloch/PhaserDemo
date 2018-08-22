@@ -79,10 +79,12 @@ function simpleEngageOnUp(simpleEngageButton, pointer, isOver) {
         };
         
         
-        makeEngageRequest(decisionPoint, parameters);
+        makeEngageRequest(decisionPoint, parameters, handleEngageResponse);
 
     }
 }
+
+
 
 function imageEngageOnUp(imageEngageButton, pointer, isOver) {
 
@@ -98,7 +100,7 @@ function imageEngageOnUp(imageEngageButton, pointer, isOver) {
 
         
         
-        makeEngageRequest(decisionPoint, null);
+        makeEngageRequest(decisionPoint, null, handleEngageResponse);
 
     }
 }
@@ -113,8 +115,15 @@ function etcConfigOnUp(etcConfigButton, pointer, isOver) {
         
         console.log('ETC Config clicked');
         var decisionPoint ='config'        
-        
-        
-        makeEngageRequest(decisionPoint, null);
+                
+        makeEngageRequest(decisionPoint, null, handleEngageResponse);
     }
+}
+
+
+// callback to handle responses from engage. These can potentially be "gameParameter", "imageMessage" of "config" responses
+// "config" responses will contain images to cache and the content and logic for any event triggered campaigns. 
+function handleEngageResponse(response)
+{
+    console.log(response);
 }
