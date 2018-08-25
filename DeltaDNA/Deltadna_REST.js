@@ -90,7 +90,7 @@ var makeEngageRequest = _.debounce(function(decisionPoint, parameters, responseC
         url: eurl,
         data: JSON.stringify(engagement),
         success: function(responseData) {
-            //the engage request was a success, fire callback
+            //the Engage request was a success, fire callback
             console.log('Engage Request successfully sent');        
             responseCallback(responseData);            
         },

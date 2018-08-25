@@ -94,12 +94,8 @@ function imageEngageOnUp(imageEngageButton, pointer, isOver) {
     if (isOver)
     {
         
-        console.log('Image Engage Button clicked');
-        
+        console.log('Image Engage Button clicked');        
         var decisionPoint ='decisionPointClicked'        
-
-        
-        
         makeEngageRequest(decisionPoint, null, handleEngageResponse);
 
     }
@@ -111,11 +107,9 @@ function etcConfigOnUp(etcConfigButton, pointer, isOver) {
     //  as if the user cancelled the operation and didn't want to press the Button after all
 
     if (isOver)
-    {
-        
+    {    
         console.log('ETC Config clicked');
-        var decisionPoint ='config'        
-                
+        var decisionPoint ='config'                    
         makeEngageRequest(decisionPoint, null, handleEngageResponse);
     }
 }
@@ -126,4 +120,27 @@ function etcConfigOnUp(etcConfigButton, pointer, isOver) {
 function handleEngageResponse(response)
 {
     console.log(response);
+    if(response.image){       
+        console.log(response.image );
+        handleImageMessage(response);
+    }
+    else if(response.parameters) {
+       hanldleGameParameters(response.parameters)
+    }        
+}
+
+// Generic handler for image message response
+function handleImageMessage(imageMessage){
+    console.log("imageMessage found");
+        
+    var myImageMessage = new ImageMessage(imageMessage);
+    console.log(myImageMessage);
+    console.log(myImageMessage.image);
+    console.log(myImageMessage.image.spritemap) ; 
+        
+}
+
+// Generic handler for game parameter response
+function hanldleGameParameters(gameParameters){
+     console.log("game parameters found");
 }
